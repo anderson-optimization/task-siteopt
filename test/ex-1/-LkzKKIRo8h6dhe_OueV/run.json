@@ -1,0 +1,219 @@
+{
+  "created": 1564430654174,
+  "createdBy": "google-oauth2|104792385606727687265",
+  "description": "Capacity=10",
+  "groupId": "empty-baboon-303-A",
+  "groupRef": {
+    "rn": "team/rmi-freeport/scenarioRunGroupItem/-LkzKGCqFXbMyQ4Uo0o1"
+  },
+  "id": "-LkzKKIRo8h6dhe_OueV",
+  "message": "All steps completed successfully",
+  "modified": 1564431042079,
+  "modifiedBy": "google-oauth2|104792385606727687265",
+  "name": {
+    "asset": [
+      "Sierrita Mine Site Test"
+    ],
+    "project": "Sierrita Project",
+    "run": "Sierrita Project/Solar, Battery, and Financials v3 [empty-baboon-303-A-1]",
+    "runId": "empty-baboon-303-A-1",
+    "scenario": "Solar, Battery, and Financials v3",
+    "scenarioInput": "Solar Scan"
+  },
+  "overrides": [
+    {
+      "before": 10,
+      "item": "project",
+      "name": "Capacity",
+      "prop": "step.solar.parameter.solar.capacityPower",
+      "value": 10
+    }
+  ],
+  "parameter": {
+    "name": {
+      "name": "Sierrita Project/Solar, Battery, and Financials v3 [empty-baboon-303-A-1]"
+    }
+  },
+  "project": {
+    "step": {
+      "solar": {
+        "parameter": {
+          "solar": {
+            "capacityPower": 10
+          }
+        }
+      }
+    },
+    "type": "project:mineanalysis"
+  },
+  "resource": {
+    "asset": [
+      "team/rmi-freeport/asset/-L_pSHQhEyMTLKAOTXOy"
+    ],
+    "data": [
+      "team/rmi-freeport/dataItem/-L_pSHVW6_SX1woiKQOg",
+      "team/rmi-freeport/dataItem/-LgiGKTCmAdg0437mQfi"
+    ],
+    "project": "team/rmi-freeport/project/-L_pVWISFc8q3-jgPM0z",
+    "run": "team/rmi-freeport/scenarioRunItem/-LkzKKIRo8h6dhe_OueV",
+    "scenario": "team/rmi-freeport/scenarioItem/-Lg3zUO3acJ-H86UhJgT"
+  },
+  "rn": "team/rmi-freeport/scenarioRunItem/-LkzKKIRo8h6dhe_OueV",
+  "scenario": {
+    "type": "scenario:sampypsaexcel"
+  },
+  "status": "Finished",
+  "step": {
+    "financial": {
+      "data": [
+        {
+          "rn": "team/rmi-test-beta-system/dataItem/ao_financial-waterfall-empty-baboon-303-A-1-json",
+          "type": "data:keyvalue"
+        },
+        {
+          "rn": "team/rmi-test-beta-system/dataItem/ao_-LkzLp8RB9pQ5ooDHbWk",
+          "type": "data:timeseries"
+        }
+      ],
+      "file": [
+        {
+          "rn": "team/rmi-test-beta-system/file/ao_financial-empty-baboon-303-A-1-xlsx",
+          "type": "file"
+        },
+        {
+          "rn": "team/rmi-test-beta-system/file/ao_annual-summary-empty-baboon-303-A-1-csv",
+          "type": "file"
+        }
+      ],
+      "key": "financial",
+      "message": "Task completed successfully",
+      "output": {
+        "carbon_savings_total": 241874.619526853,
+        "direct_footprint": 55,
+        "irr": "#N/A",
+        "mean_dscr": -46.0072091017047,
+        "min_dscr": -48.8324968355695,
+        "npv": -179966153.891888,
+        "simple_payback": "NA",
+        "years_of_low_dscr": 25
+      },
+      "parent": "power",
+      "status": "Finished",
+      "task": {
+        "rn": "team/rmi-freeport/task/-L_pSHj1zRNleX-0I9hC"
+      },
+      "taskRunId": "-LkzLTCWzV5qmMNH5eJA",
+      "type": "scenario:financial:excel"
+    },
+    "power": {
+      "data": [
+        {
+          "rn": "team/rmi-test-beta-system/dataItem/ao_-LkzLTTOu9sgR0kF2MTo",
+          "type": "data:timeseries"
+        },
+        {
+          "rn": "team/rmi-test-beta-system/dataItem/ao_-LkzLTTP-dLMl7hlAKdK",
+          "type": "data:timeseries"
+        }
+      ],
+      "file": [
+        {
+          "rn": "team/rmi-test-beta-system/file/ao_pcm-monthly-empty-baboon-303-A-1-csv",
+          "type": "file:data:csv"
+        },
+        {
+          "rn": "team/rmi-test-beta-system/file/ao_pcm-hourly-empty-baboon-303-A-1-csv",
+          "type": "file:data:csv"
+        },
+        {
+          "rn": "team/rmi-test-beta-system/file/ao_pcm-monthperiod-empty-baboon-303-A-1-csv",
+          "type": "file:data:csv"
+        }
+      ],
+      "key": "power",
+      "message": "Task completed successfully",
+      "output": {
+        "annual_cycles": 426.2600671372908,
+        "annual_demand_charge": 3217932.4466322144,
+        "annual_electricity_cost": 24525897.68847183,
+        "annual_energy_charge": 31974995.720975295,
+        "battery_duration": 1,
+        "battery_energy": 5,
+        "battery_power": 5
+      },
+      "parent": "sam",
+      "status": "Finished",
+      "task": {
+        "rn": "team/rmi-freeport/task/-L_pSH_edSKeHvXUJZZ8"
+      },
+      "taskRunId": "-LkzKY2llmMNeG3h2lji",
+      "type": "scenario:power:pypsa"
+    },
+    "sam": {
+      "data": [
+        {
+          "rn": "team/rmi-test-beta-system/dataItem/ao_nrel-sam-gen-empty-baboon-303-A-1-json",
+          "type": "data:timeseries:8760"
+        },
+        {
+          "rn": "team/rmi-test-beta-system/dataItem/ao_nrel-sam-loss-empty-baboon-303-A-1-json",
+          "type": "data:keyvalue"
+        }
+      ],
+      "file": [
+        {
+          "rn": "team/rmi-test-beta-system/file/ao_nrel-sam-output-empty-baboon-303-A-1-json",
+          "type": "file:data:csv"
+        }
+      ],
+      "key": "sam",
+      "message": "Task completed successfully",
+      "output": {
+        "annual_energy": 25833152,
+        "capacity_factor": 29.49038314819336,
+        "kwh_per_kw": 2583.357421875,
+        "performance_ratio": 0.8083117604255676,
+        "solar_capacity": 10
+      },
+      "parent": "weather",
+      "status": "Finished",
+      "task": {
+        "rn": "team/rmi-freeport/task/-L_pSHVyM4QMx5Q_F4E3"
+      },
+      "taskRunId": "-LkzKVPmIsWPxXW3zihi",
+      "type": "scenario:nrel:sam"
+    },
+    "weather": {
+      "data": [
+        {
+          "rn": "team/rmi-test-beta-system/dataItem/ao_nsrdb-weather-POINT(-111_1253725__31_8695282)_ytmy_i60-json",
+          "type": "data:timeseries:8760"
+        }
+      ],
+      "file": [
+        {
+          "rn": "team/rmi-test-beta-system/file/ao_nsrdb-weather-POINT(-111_1253725__31_8695282)_ytmy_i60-csv",
+          "type": "file:data:csv"
+        }
+      ],
+      "key": "weather",
+      "message": "Task completed successfully",
+      "output": {
+        "annual_dhi": 465864,
+        "annual_dni": 2799979,
+        "annual_ghi": 2150270,
+        "avg_temp": 18.664611872146118,
+        "avg_windspeed": 3.11601598173516,
+        "weather_tag": "POINT(-111.1253725%2031.8695282)_ytmy_i60"
+      },
+      "status": "Finished",
+      "task": {
+        "rn": "team/rmi-freeport/task/-L_pSHTYIis-8UV8Hpbb"
+      },
+      "taskRunId": "-LkzKOcv4BBcw5hj-ZvI",
+      "type": "scenario:nrel:weather"
+    }
+  },
+  "stepKey": "financial",
+  "type": "run:scenario:sampypsaexcel"
+}

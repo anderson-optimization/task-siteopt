@@ -5,7 +5,7 @@ all:
 	echo "${IMAGE}"
 
 test:
-	bash scripts/run-test-stdin.sh test/ex-1.json DEBUG
+	bash scripts/run-test-stdin.sh test/ex-1/-LkzKKIRo8h6dhe_OueV/run.json -LkzKKIRo8h6dhe_OueV DEBUG
 
 
 

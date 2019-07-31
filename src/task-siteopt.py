@@ -4,6 +4,7 @@ import os
 import sys
 import json
 
+
 from ao.task import TaskHandle
 from ao import get_path
 
@@ -137,8 +138,18 @@ write_datetime(year=2018,folder=model_dir)
 
 
 logger.debug('Run gams for project {}'.format(project_name))
-task_handle.run(['gams',model_file,'--project',project_name])
+task_handle.run(['/var/task/gams/gams','siteanalysis.gms','--project',project_name],cwd=model_dir)
 
+# from gdx_to_csv import convert_gdx_to_csv
+# logger.debug('Gams run complete, convert output')
+# convert_gdx_to_csv('model/output.gdx','output',gams_dir='/var/task/gams',wide=True,frmt='format.json')
+
+task_handle.run(['python3','/usr/bin/gdx_to_csv.py',
+		'-i','model/output.gdx',
+		'-o','output',
+		'-g','/var/task/gams',
+		'-w',
+		'-f','/var/task/format.json'],cwd=task_handle.scenario_folder)
 
 logger.debug("Analysis finished, send output!")
 task_handle.send()

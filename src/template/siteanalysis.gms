@@ -2,6 +2,13 @@
 
 $onempty
 
+* Handle to long of numbers
+$offdigit
+
+* Ensure project is set
+$if not set project $abort
+
+
 *****************
 *** Overrides ***
 *****************
@@ -69,12 +76,6 @@ month_time_last(month,time)$(month2t(month,time) and ord(time)=smax(t$month2t(mo
 time_first(time)$(ord(time)=smin(t,ord(t)))=YES;
 time_last(time)$(ord(time)=smax(t,ord(t)))=YES;
 
-** AO Items
-
-** ISSUE
-** Project is hardcoded!! - send as env variable
-$set project SiteAProject
-
 
 * Project
 set project "Projects are grouping of assets, data, and parameters" /
@@ -130,7 +131,10 @@ new_battery
 set data "AO Data objects" /
 **ao list data
 /;
-set supply(data) "Electrical supply data, currently only TOU Rates"/
+set demand(data) "Project demand" /
+**ao list data "groupKey == demand"
+/;
+set supply(data) "Electrical supply data, TOU Rates"/
 **ao list data "groupKey == tourate"
 /;
 
@@ -210,13 +214,13 @@ parameter
 ;
 
 * Data sets
-parameter demand(time,site) "hourly demand (MW)";
+parameter demand_t(time,demand) "hourly demand (MW)";
 $include demand.gms
 
 $include gen.gms
 
 * Convert to MW
-demand(time,site)=demand(time,site)/1000;
+demand_t(time,demand)=demand_t(time,demand)/1000;
 p_max_pu_t(time,gen)=p_max_pu_t(time,gen)/1000;
 
 
@@ -293,6 +297,7 @@ energy_rate(supply,time)=1000*sum(period$supply_product_period2time(supply,'ener
 							);
 demand_rate(supply,month,period)=1000*(product_rate(supply,'demand',period,'tier1')
 *									+product_adj(supply,'demand',period,'tier1'));
+							);
 
 
 *****************
@@ -462,8 +467,8 @@ project_balance(project,time)$ch(time)..
 		sum(supply$project2data(project,supply),
 				supplyX(supply,time)
 			)
-		- sum(site$project2asset(project,site),
-				demand(time,site)
+		- sum(demand$project2data(project,demand),
+				demand_t(time,demand)
 			);
 
 
@@ -579,7 +584,7 @@ project_info(t,'month')	= datetime_map(t,'month');
 project_info(t,'day')	= datetime_map(t,'day');
 project_info(t,'hour')	= datetime_map(t,'hour');
 
-project_info(t,'demand')		= sum(site,demand(t,site));
+project_info(t,'demand')		= sum(demand,demand_t(t,demand));
 project_info(t,'gen')			= sum(gen,genX.l(gen,t));
 project_info(t,'solar')			= sum(solar,genX.l(solar,t));
 project_info(t,'solar_resource')= sum(solar,p_max_pu_t(t,solar));
@@ -610,7 +615,7 @@ month_info(month,'supply_buy')		= sum(t$month2t(month,t),project_info(t,'supply_
 month_info(month,'supply_sell')		= sum(t$month2t(month,t),project_info(t,'supply_sell'));
 
 month_info(month,'max_buy') = smax((supply,t)$month2t(month,t),buyX.l(supply,t));
-month_info(month,'max_demand') = smax((site,t)$month2t(month,t),demand(t,site));
+month_info(month,'max_demand') = smax((demand,t)$month2t(month,t),demand_t(t,demand));
 
 month_info(month,'energy_cost')   = sum(supply,supply_energyCM.l(supply,month));
 month_info(month,'demand_cost')   = sum(supply,supply_demandCM.l(supply,month));
@@ -621,7 +626,7 @@ month_period_info(month,period,'month')$month2demand_period(month,period)	= ord(
 month_period_info(month,period,'period')$month2demand_period(month,period)	= ord(period);
 
 month_period_info(month,period,'max_buy')$month2demand_period(month,period) = smax(supply,max_buyX.l(supply,month,period));
-month_period_info(month,period,'max_demand')$month2demand_period(month,period) = smax((site,supply,t)$(month2t(month,t) and supply_product_period2time(supply,'demand',period,t)),demand(t,site));
+month_period_info(month,period,'max_demand')$month2demand_period(month,period) = smax((demand,supply,t)$(month2t(month,t) and supply_product_period2time(supply,'demand',period,t)),demand_t(t,demand));
 month_period_info(month,period,'demand_cost')$month2demand_period(month,period) = sum(supply,supply_demandCMP.l(supply,month,period));
 month_period_info(month,period,'demand_rate')$month2demand_period(month,period) = sum(supply,demand_rate(supply,month,period));
 

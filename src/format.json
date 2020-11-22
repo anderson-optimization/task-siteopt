@@ -1,21 +1,27 @@
 {
 	"project_info":{
 		"columns":[
-			"year","month","day","hour",
-			"demand","gen","batt_store","batt_dispatch","batt_energy","supply_buy","supply_sell",
-			"solar","wind","solar_resource","wind_resource",
-			"demand_period","energy_period", 
-			"marginal_price","buy_cost","effective_energy_rate","energy_rate"
+			"demand","gen","supply",
+			"batt_store","batt_dispatch","batt_energy","batt_movement","batt_cycles",
+			"solar","solar_resource",
+			"supply_buy","supply_sell",
+			"wind","wind_resource",
+			"marginal_price","buy_cost","energy_rate",
+			"demand_period","energy_period","weekend", 
+			"year","month","day","hour","datetime"
 		],
 		"index_name":"time_label",
-		"sort":["year","month","day","hour"]
+		"sort":["datetime"],
+		"datetime":["year","month","day","hour"]
 	},
 	"month_info":{
 		"columns":[
 			"year","month",
-			"demand","gen","batt_store","batt_dispatch","supply_buy","supply_sell",
+			"demand","gen","batt_store","batt_dispatch","batt_cycles",
+			"supply_buy","supply_sell",
+			"solar","wind","solar_resource","wind_resource",
 			"max_buy","max_demand",
-			"energy_cost","demand_cost"
+			"energy_cost","demand_cost","total_cost"
 		],
 		"index_name": "month_label",
 		"sort": "month"

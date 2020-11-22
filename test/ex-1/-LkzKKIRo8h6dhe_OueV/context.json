@@ -155,6 +155,7 @@
             ],
             "chargeEfficiency": 0.95,
             "dischargeEfficiency": 0.95,
+            "cycleCost": 10,
             "type": "parameter:batterycharacter:default"
           },
           "batterysize": {

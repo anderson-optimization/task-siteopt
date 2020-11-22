@@ -1,5 +1,6 @@
 
 IMAGE="andersonopt/siteopt"
+REPO="133579274133.dkr.ecr.us-west-2.amazonaws.com"
 
 all:
 	echo "${IMAGE}"
@@ -9,7 +10,9 @@ test:
 
 
 gams.exe: 
-	curl -o gams.exe https://d37drm4t2jghv5.cloudfront.net/distributions/27.1.0/linux/linux_x64_64_sfx.exe
+	curl -o gams.exe https://d37drm4t2jghv5.cloudfront.net/distributions/24.9.1/linux/linux_x64_64_sfx.exe
+	#curl -o gams.exe https://d37drm4t2jghv5.cloudfront.net/distributions/27.1.0/linux/linux_x64_64_sfx.exe
+	#curl -o gams.exe https://d37drm4t2jghv5.cloudfront.net/distributions/28.2.0/linux/linux_x64_64_sfx.exe
 
 build: gams.exe
 	docker build -t ${IMAGE} .
@@ -17,6 +20,11 @@ build: gams.exe
 deploy:
 	echo "Deploy to AWS"
 ##	docker push ${IMAGE}
+	docker tag ${IMAGE} ${REPO}/${IMAGE}
+	aws ecr get-login --no-include-email > docker-login.sh
+	bash docker-login.sh
+	docker push ${REPO}/${IMAGE}
+	rm docker-login.sh
 
 inspect:
 	docker run -it --rm \

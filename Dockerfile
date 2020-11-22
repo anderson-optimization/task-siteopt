@@ -15,7 +15,7 @@ RUN pip3 install --upgrade pip
 COPY gams.exe /tmp/gams.exe
 
 # Install GAMS
-ENV GAMSFOLDER gams27.1_linux_x64_64_sfx
+ENV GAMSFOLDER gams24.9_linux_x64_64_sfx
 ENV GAMSPATH ${TASKPATH}/${GAMSFOLDER}
 
 RUN chmod +x /tmp/gams.exe && /tmp/gams.exe && rm /tmp/gams.exe
@@ -56,6 +56,8 @@ RUN \
   pip3 install --upgrade -r requirements-custom.txt -t .pypath/ 
 
 
+RUN  pip3 install --force-reinstall awscli
+
 ADD lib/ao/ao /var/task/.pypath/ao
 ADD lib/gams-parser/gams_parser /var/task/.pypath/gams_parser
 
@@ -67,3 +69,6 @@ ENV PYTHONPATH /var/task/.pypath
 
 COPY cred/gamslice.txt	${GAMSPATH}/gamslice.txt
 #RUN ln -s ${GAMSPATH}/gams /usr/bin/gams
+
+
+RUN  pip3 install matplotlib seaborn

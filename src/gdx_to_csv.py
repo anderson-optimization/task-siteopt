@@ -42,10 +42,22 @@ import os
 
 import gdxpds
 import pandas as pd
+import numpy as np
 import json
 
 logger = logging.getLogger(__name__)
 
+def combine64(years, months=1, days=1, weeks=None, hours=None, minutes=None,
+              seconds=None, milliseconds=None, microseconds=None, nanoseconds=None):
+    years = np.asarray(years) - 1970
+    months = np.asarray(months) - 1
+    days = np.asarray(days) - 1
+    types = ('<M8[Y]', '<m8[M]', '<m8[D]', '<m8[W]', '<m8[h]',
+             '<m8[m]', '<m8[s]', '<m8[ms]', '<m8[us]', '<m8[ns]')
+    vals = (years, months, days, weeks, hours, minutes, seconds,
+            milliseconds, microseconds, nanoseconds)
+    return sum(np.asarray(v, dtype=t) for t, v in zip(types, vals)
+               if v is not None)
 
 def convert_gdx_to_csv(in_gdx, out_dir, gams_dir=None, wide=False, frmt=None):
     # check inputs
@@ -54,6 +66,7 @@ def convert_gdx_to_csv(in_gdx, out_dir, gams_dir=None, wide=False, frmt=None):
         
     # convert to pandas.DataFrames
     dataframes = gdxpds.to_dataframes(in_gdx, gams_dir)
+    logger.debug('Have dataframes')
 
     # write to files
     if not os.path.exists(out_dir):
@@ -83,6 +96,8 @@ def convert_gdx_to_csv(in_gdx, out_dir, gams_dir=None, wide=False, frmt=None):
                 df=df[columns]
             if 'index_name' in frmt_symbol:
                 df.index.name=frmt_symbol['index_name']
+            if 'datetime' in frmt_symbol:
+                df.insert(0,'date',pd.to_datetime(df['datetime'],unit='s'))
             if 'sort' in frmt_symbol:
                 df=df.sort_values(by=frmt_symbol['sort'])
         df.to_csv(csv_path)
@@ -100,7 +115,9 @@ if __name__ == "__main__":
                         directory.''', default = None)
     parser.add_argument('-w', '--wide', help='''Transform to wide format''', action='store_true', default = False)
     parser.add_argument('-f', '--format', help='''Format dataset definitions''', default = "/var/task/format.json")
+ 
         
+
     args = parser.parse_args()
     
     if not args.gams_dir and 'GAMSPATH' in os.environ:
@@ -112,7 +129,11 @@ if __name__ == "__main__":
     if args.format:
         with open(args.format,'r') as infile:
             frmt_data=json.load(infile)
+        logger.debug('HaveFormat Data')
+#        print('FormatData: ',frmt_data)
     else:
         frmt_data={}
 
+    logger.debug('Convert gdx to csv')
     convert_gdx_to_csv(args.in_gdx, os.path.realpath(args.out_dir), args.gams_dir, wide=args.wide,frmt=frmt_data)
+    logger.debug('Conversion finished')
